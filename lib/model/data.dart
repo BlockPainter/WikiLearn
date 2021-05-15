@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:recase/recase.dart';
 
 class QuizObject {
@@ -69,7 +70,21 @@ class QuizAnswer {
 enum QuizQuestionType {
   multipleChoice,
 }
-enum QuizSubjectType { math, german, history }
+enum QuizSubjectType {
+  math,
+  german,
+  englisch,
+  history,
+  it,
+  physik,
+  biologie,
+  chemie,
+  politik,
+  sport,
+  witschaft,
+  ethik,
+  musik,
+}
 
 class InfoForEnum {
   String name;
@@ -89,19 +104,52 @@ QuizSubjectType fromName(String name) {
   return null;
 }
 
+/*    for (var item in [
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '', // bank-out...
+                        '',
+                        '',
+                        '',
+                        '',
+                      ]) */
 final QuizSubjectTypeInfo = <QuizSubjectType, InfoForEnum>{
-  QuizSubjectType.math: InfoForEnum("mathe", "Mathe", Icons.add_chart),
+  QuizSubjectType.math: InfoForEnum(
+      "mathe", "Mathe", MdiIcons.androidStudio), //calculatorVariantOutline
+  QuizSubjectType.it:
+      InfoForEnum("informatik", "Informatik", MdiIcons.serverSecurity),
+  QuizSubjectType.physik:
+      InfoForEnum("physik", "Physik", MdiIcons.arrowExpandVertical),
+  QuizSubjectType.biologie:
+      InfoForEnum("biologie", "Biologie", MdiIcons.babyFaceOutline),
+  QuizSubjectType.chemie:
+      InfoForEnum("chemie", "Chemie", MdiIcons.puzzleOutline),
+  QuizSubjectType.politik:
+      InfoForEnum("politik", "Politik", MdiIcons.bankOutline),
+  QuizSubjectType.englisch:
+      InfoForEnum("englisch", "Englisch", MdiIcons.attachment),
+  QuizSubjectType.sport:
+      InfoForEnum("sport", "Sport", MdiIcons.seatReclineExtra),
   QuizSubjectType.history:
       InfoForEnum("geschichte", "Geschichte", Icons.auto_stories),
   QuizSubjectType.german: InfoForEnum("deutsch", "Deutsch", Icons.language),
+  QuizSubjectType.witschaft:
+      InfoForEnum("witschaft", "Witschaft", Icons.calculate_outlined),
+  QuizSubjectType.ethik:
+      InfoForEnum("ethik", "Ethik", MdiIcons.accountCheckOutline),
+  QuizSubjectType.musik: InfoForEnum("musik", "Musik", MdiIcons.accountVoice),
 };
 
 final QuizQuestionTypeInfo = <QuizQuestionType, InfoForEnum>{
   QuizQuestionType.multipleChoice:
       InfoForEnum("multipleChoice", "Mehrfachauswahl", Icons.ballot_sharp)
 };
-
-
 
 /*final icons = <QuizSubjectType, IconData>{
   QuizSubjectType.math: Icons.add_chart,
