@@ -1,0 +1,43 @@
+{
+    "fach": "geschichte",
+    "topic": "Industrialisierung",
+    "videoLink": "QRjH3bxsRao",
+    "questions": [
+        {
+            "content": "Welches Geschlecht hat am meist am Spinrad gearbeitet?",
+            "type": "QuizQuestionType.multipleChoice",
+            "answers": [
+                {
+                    "content": "Man",
+                    "correct": false
+                },
+                {
+                    "content": "Frau",
+                    "correct": true
+                },
+                {
+                    "content": "Divers",
+                    "correct": false
+                }
+            ]
+        },
+        {
+            "content": "Wieviel Fäden kann einen Faru mit der \"Spinning Jenny\" auf ein mal spinnen?",
+            "type": "QuizQuestionType.multipleChoice",
+            "answers": [
+                {
+                    "content": "1",
+                    "correct": false
+                },
+                {
+                    "content": "16",
+                    "correct": false
+                },
+                {
+                    "content": "8",
+                    "correct": true
+                }
+            ]
+        }
+    ]
+}
