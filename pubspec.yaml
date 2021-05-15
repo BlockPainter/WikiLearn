@@ -33,6 +33,10 @@ dependencies:
   skynet:
     git: https://github.com/redsolver/skynet.git
   convert: ^3.0.0
+  dart_vlc: ^0.0.7
+  flutter_markdown: ^0.6.2
+  url_launcher: ^6.0.3
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:
@@ -73,3 +77,4 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
