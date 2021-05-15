@@ -7,7 +7,9 @@ class QuizObject {
   String videoLink;
   List<QuizQuestion> questions = <QuizQuestion>[];
   bool isValid = false;
-  String get fachCapi => fach.sentenceCase;
+
+  String get subjectCapi => subject.sentenceCase;
+
   QuizObject(
       {this.subject = "mathe",
       this.topic = "",
