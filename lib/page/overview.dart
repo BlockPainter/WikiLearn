@@ -43,6 +43,8 @@ class _OverViewPageState extends State<OverViewPage> {
           return ListTile(
             title: Text("${obj.fach}: ${obj.topic}"),
             subtitle: Text("${obj.questions.length} Fragen"),
+            leading: Image.network(
+                "https://i3.ytimg.com/vi/${obj.videoLink}/default.jpg"),
           );
         },
       ),
@@ -50,8 +52,11 @@ class _OverViewPageState extends State<OverViewPage> {
         onPressed: () async {
           final obj = await Navigator.of(context)
               .push(MaterialPageRoute(builder: (context) => EditorPage()));
-          _list.add(obj);
-          setState(() {});
+          if (obj?.isValid ?? false) {
+            _list.add(obj);
+
+            setState(() {});
+          }
         },
         child: Icon(Icons.add),
       ),

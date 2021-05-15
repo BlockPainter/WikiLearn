@@ -3,6 +3,7 @@ class QuizObject {
   String topic;
   String videoLink;
   List<QuizQuestion> questions = <QuizQuestion>[];
+  bool isValid = false;
 
   QuizObject({this.fach = "mathe", this.topic = "", this.videoLink = ""});
 

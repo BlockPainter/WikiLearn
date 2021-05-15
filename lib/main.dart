@@ -139,56 +139,51 @@ class _EditorPageState extends State<EditorPage> {
                           size: 200,
                         ),*/
                   SizedBox(height: 16),
-                  TextFormField(
-                    controller: TextEditingController(
-                      text: _quizObject.videoLink,
-                    ),
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "Youtube Video URL",
-                    ),
-                    maxLines: 1,
-                    validator: (str) {
-                      if (str.isEmpty) {
-                        return "Empty URL!";
-                      }
-
-                      try {
-                        VideoId.fromString(str);
-                      } catch (e) {
-                        return "Invalid URL!";
-                      }
-
-                      return null;
-                    },
-                    onChanged: (str) {
-                      // item.content = str;
-                      try {
-                        _quizObject.videoLink = VideoId.fromString(str).value;
-                        setState(() {});
-                      } catch (e) {
-                        _quizObject.videoLink = '';
-                      }
-                    },
-
-                    /*onChanged: (str) async {
-                          print(str);
-                          
-                            try {
-                              final yt = YoutubeExplode();
-                              final video = await yt.videos.get(str);
-                              _thUrl = video.thumbnails.highResUrl;
-                            
-                              print(video.thumbnails.highResUrl);
-                              print(video.author);
-                              
-                            } catch (e) {
-                              
-                              print(e);
+                  Card(
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          controller: TextEditingController(
+                            text: _quizObject.videoLink,
+                          ),
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: "Youtube Video URL",
+                          ),
+                          maxLines: 1,
+                          validator: (str) {
+                            if (str.isEmpty) {
+                              return "Empty URL!";
                             }
-                          }
-                          setState(() {});
-                        }, */
+
+                            try {
+                              VideoId.fromString(str);
+                            } catch (e) {
+                              return "Invalid URL!";
+                            }
+
+                            return null;
+                          },
+                          onChanged: (str) {
+                            // item.content = str;
+                            try {
+                              _quizObject.videoLink =
+                                  VideoId.fromString(str).value;
+                              setState(() {});
+                            } catch (e) {
+                              _quizObject.videoLink = '';
+                            }
+                          },
+                        ),
+                        if (_quizObject != null &&
+                            _quizObject.videoLink.isNotEmpty)
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: (Image.network(
+                                "https://i3.ytimg.com/vi/${_quizObject.videoLink}/hqdefault.jpg")),
+                          ),
+                      ],
+                    ),
                   ),
                   SizedBox(height: 30),
                   ElevatedButton(
@@ -323,6 +318,7 @@ class _EditorPageState extends State<EditorPage> {
             file.createSync(recursive: true);
 
             file.writeAsStringSync(json.encode(_quizObject));
+            _quizObject.isValid = true;
             Navigator.of(context).pop(_quizObject);
           } else {
             _isAutoV = true;
