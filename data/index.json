@@ -1,18 +1,1 @@
-{
-    "geschichte": [
-        {
-            "subject": "geschichte",
-            "topic": "Industrialisierung",
-            "image": "https://i3.ytimg.com/vi/QRjH3bxsRao/mqdefault.jpg",
-            "questionCount": 2,
-            "url": "https://jhackt.hns.siasky.net/geschichte/Industrialisierung.json"
-        },
-        {
-            "subject": "geschichte",
-            "topic": "Industrielle Revolution",
-            "image": "https://i3.ytimg.com/vi/QRjH3bxsRao/mqdefault.jpg",
-            "questionCount": 2,
-            "url": "https://jhackt.hns.siasky.net/geschichte/Industrielle%20Revolution.json"
-        }
-    ]
-}
+{"geschichte":[{"subject":"geschichte","topic":"Industrialisierung","image":"https://i3.ytimg.com/vi/QRjH3bxsRao/mqdefault.jpg","questionCount":2,"url":"https://jhackt.hns.siasky.net/geschichte/Industrialisierung.json"},{"subject":"geschichte","topic":"Das Ende des 2. Weltkriegs","image":"https://i3.ytimg.com/vi/ypZu71D4iVg/mqdefault.jpg","questionCount":1,"url":"https://jhackt.hns.siasky.net/geschichte/Das%20Ende%20des%202.%20Weltkriegs.json"}]}

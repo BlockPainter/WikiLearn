@@ -1,0 +1,26 @@
+{
+    "subject": "geschichte",
+    "topic": "Das Ende des 2. Weltkriegs",
+    "videoLink": "ypZu71D4iVg",
+    "videoType": "youtube",
+    "questions": [
+        {
+            "content": "Wann endete der 2. Welkrieg?",
+            "type": "QuizQuestionType.multipleChoice",
+            "answers": [
+                {
+                    "content": "1943",
+                    "correct": false
+                },
+                {
+                    "content": "1945",
+                    "correct": true
+                },
+                {
+                    "content": "1976",
+                    "correct": false
+                }
+            ]
+        }
+    ]
+}

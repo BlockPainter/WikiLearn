@@ -1,16 +1,24 @@
-import 'dart:async';
-import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
-//import 'dart:html';
 
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/data.dart';
 import 'package:flutter_application_1/page/overview.dart';
 import 'package:path/path.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:skynet/src/config.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
-void main() {
+import 'app.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  SkynetConfig.host = 'skyportal.xyz';
+
+  prefs = await SharedPreferences.getInstance();
+
   runApp(MyApp());
 }
 
@@ -18,49 +26,48 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
+    return AdaptiveTheme(
+      light: ThemeData(
+        brightness: Brightness.light,
         primarySwatch: Colors.green,
-        // brightness: Brightness.dark,
+        accentColor: Colors.green,
       ),
-      home: OverViewPage(), //MyHomePage(title: 'Flutter Demo Home Page'),
+      dark: ThemeData(
+        brightness: Brightness.dark,
+        primarySwatch: Colors.green,
+        accentColor: Colors.green,
+      ),
+      initial: AdaptiveThemeMode.light,
+      builder: (theme, darkTheme) => MaterialApp(
+        title: 'WikiLearn Editor',
+        theme: theme,
+        darkTheme: darkTheme,
+        home: OverViewPage(),
+      ),
     );
   }
 }
 
 class EditorPage extends StatefulWidget {
-  EditorPage({Key key, this.title}) : super(key: key);
+  final QuizObject initialQuizObject;
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+  EditorPage({Key key, this.initialQuizObject}) : super(key: key);
 
   @override
   _EditorPageState createState() => _EditorPageState();
 }
 
 class _EditorPageState extends State<EditorPage> {
-  var _quizObject = QuizObject();
+  QuizObject _quizObject;
   String _thUrl;
   final _formKey = GlobalKey<FormState>();
   bool _isAutoV = false;
+
+  @override
+  void initState() {
+    _quizObject = widget.initialQuizObject ?? QuizObject();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +118,21 @@ class _EditorPageState extends State<EditorPage> {
                     ),
                     value: _quizObject.subject,
                     items: <DropdownMenuItem>[
-                      for (var item in ["mathe", "deutsch", "geschichte"])
+                      for (var item in [
+                        'mathe',
+                        'informatik',
+                        'physik',
+                        'biologie',
+                        'chemie',
+                        'deutsch',
+                        'englisch',
+                        'musik',
+                        'politik',
+                        'witschaft',
+                        'ethik',
+                        'geschichte',
+                        'sport',
+                      ])
                         DropdownMenuItem(
                           value: item,
                           child: Text(item),
@@ -124,6 +145,7 @@ class _EditorPageState extends State<EditorPage> {
                   ),
                   SizedBox(height: 16),
                   TextField(
+                    controller: TextEditingController(text: _quizObject.topic),
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: "Topic",
