@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/model/data.dart';
+import 'package:path/path.dart';
 
 class OverViewPage extends StatefulWidget {
   @override
@@ -13,21 +14,42 @@ class OverViewPage extends StatefulWidget {
 class _OverViewPageState extends State<OverViewPage> {
   final _list = <QuizObject>[];
 
+  final rootDir = Directory("data");
+
   @override
   void initState() {
     super.initState();
-    final dirM = Directory("data");
-    for (var dir in dirM.listSync()) {
+    _readFilesAndBuildIndex();
+  }
+
+  void _readFilesAndBuildIndex() {
+    Map index = {};
+    for (var dir in rootDir.listSync()) {
       if (dir is Directory) {
+        final fach = basename(dir.path);
+        print('Fach: $fach');
+        index[fach] = [];
         for (var file in dir.listSync()) {
           if (file is File) {
-            _list
-                .add(QuizObject.fromJson(json.decode(file.readAsStringSync())));
             print(file);
+            final qo =
+                QuizObject.fromJson(json.decode(file.readAsStringSync()));
+            _list.add(qo);
+
+            index[fach].add({
+              'fach': qo.fach,
+              'topic': qo.topic,
+              'image': 'https://i3.ytimg.com/vi/${qo.videoLink}/mqdefault.jpg',
+              'questionCount': qo.questions.length,
+              'url':
+                  'https://jhackt.hns.siasky.net/${qo.fach}/${Uri.encodeFull(qo.topic)}.json',
+            });
           }
         }
       }
     }
+    File(join(rootDir.path, 'index.json'))
+        .writeAsStringSync(json.encode(index));
   }
 
   @override
@@ -35,6 +57,16 @@ class _OverViewPageState extends State<OverViewPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Overview"),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.upload_outlined,
+            ),
+            onPressed: () {
+              print('building index.json...');
+            },
+          )
+        ],
       ),
       body: ListView.builder(
         itemCount: _list.length,

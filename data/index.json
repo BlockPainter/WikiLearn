@@ -1,0 +1,18 @@
+{
+    "geschichte": [
+        {
+            "fach": "geschichte",
+            "topic": "Industrialisierung",
+            "image": "https://i3.ytimg.com/vi/QRjH3bxsRao/mqdefault.jpg",
+            "questionCount": 2,
+            "url": "https://jhackt.hns.siasky.net/geschichte/Industrialisierung.json"
+        },
+        {
+            "fach": "geschichte",
+            "topic": "Industrielle Revolution",
+            "image": "https://i3.ytimg.com/vi/QRjH3bxsRao/mqdefault.jpg",
+            "questionCount": 2,
+            "url": "https://jhackt.hns.siasky.net/geschichte/Industrielle%20Revolution.json"
+        }
+    ]
+}
