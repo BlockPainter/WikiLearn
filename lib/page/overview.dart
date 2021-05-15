@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/main.dart';
+import 'package:flutter_application_1/model/Language.dart';
 import 'package:flutter_application_1/model/data.dart';
 import 'package:path/path.dart';
 
@@ -13,13 +14,17 @@ class OverViewPage extends StatefulWidget {
 
 class _OverViewPageState extends State<OverViewPage> {
   final _list = <QuizObject>[];
-
+  final languageManager = LanguageInit();
   final rootDir = Directory("data");
 
   @override
   void initState() {
     super.initState();
+    print("initState");
     _readFilesAndBuildIndex();
+    print("Init Language");
+
+    print("Languages: ${languageManager.getLanguages()}");
   }
 
   void _readFilesAndBuildIndex() {
@@ -37,12 +42,12 @@ class _OverViewPageState extends State<OverViewPage> {
             _list.add(qo);
 
             index[subject].add({
-              'subject': qo.subject,
+              'subject': QuizSubjectTypeInfo[qo.subject].name,
               'topic': qo.topic,
               'image': 'https://i3.ytimg.com/vi/${qo.videoLink}/mqdefault.jpg',
               'questionCount': qo.questions.length,
               'url':
-                  'https://jhackt.hns.siasky.net/${qo.subject}/${Uri.encodeFull(qo.topic)}.json',
+                  'https://jhackt.hns.siasky.net/${QuizSubjectTypeInfo[qo.subject].name}/${Uri.encodeFull(qo.topic)}.json',
             });
           }
         }
@@ -56,7 +61,7 @@ class _OverViewPageState extends State<OverViewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Overview"),
+        title: Text(Language["overview.heading"]),
         actions: [
           IconButton(
             icon: Icon(
@@ -79,6 +84,40 @@ class _OverViewPageState extends State<OverViewPage> {
             leading: Image.network(
                 "https://i3.ytimg.com/vi/${obj.videoLink}/default.jpg"),
           );
+        },
+      ),
+      /*bottomNavigationBar: Row(
+        children: [
+          FloatingActionButton(
+            onPressed: () async {
+              setState(() {});
+            },
+            child: Icon(Icons.language),
+          ),
+          DropdownButtonFormField(
+            value: languageManager.getLanguages()[0],
+            items: <DropdownMenuItem>[
+              for (var l in languageManager.getLanguages())
+                DropdownMenuItem(
+                  value: l,
+                  child: Text(l),
+                ),
+            ],
+          )
+        ],
+      ),*/
+      bottomNavigationBar: DropdownButtonFormField(
+        value: languageManager.getLanguages()[0],
+        items: <DropdownMenuItem>[
+          for (var l in languageManager.getLanguages())
+            DropdownMenuItem(
+              value: l,
+              child: Text(l),
+            ),
+        ],
+        onSaved: (o) {},
+        onChanged: (o) {
+          languageManager.readLanguages(o);
         },
       ),
       floatingActionButton: FloatingActionButton(
