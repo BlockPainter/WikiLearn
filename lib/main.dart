@@ -6,6 +6,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/data.dart';
+import 'package:flutter_application_1/page/overview.dart';
 import 'package:path/path.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
@@ -32,13 +33,13 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
         brightness: Brightness.dark,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: OverViewPage(), //MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class EditorPage extends StatefulWidget {
+  EditorPage({Key key, this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -52,10 +53,10 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _EditorPageState createState() => _EditorPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _EditorPageState extends State<EditorPage> {
   var _quizObject = QuizObject();
   String _thUrl;
   final _formKey = GlobalKey<FormState>();
@@ -87,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 // Column is also a layout widget. It takes a list of children and
                 // arranges them vertically. By default, it sizes itself to fit its
                 // children horizontally, and tries to be as tall as its parent.
-                //a
+                //
                 // Invoke "debug painting" (press "p" in the console, choose the
                 // "Toggle Debug Paint" action from the Flutter Inspector in Android
                 // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
@@ -322,6 +323,7 @@ class _MyHomePageState extends State<MyHomePage> {
             file.createSync(recursive: true);
 
             file.writeAsStringSync(json.encode(_quizObject));
+            Navigator.of(context).pop(_quizObject);
           } else {
             _isAutoV = true;
             setState(() {});
