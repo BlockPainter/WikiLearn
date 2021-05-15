@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app.dart';
 import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/model/data.dart';
+// import 'package:flutter_application_1/page/watch.dart';
 import 'package:flutter_application_1/utils/skynet.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:path/path.dart';
@@ -76,6 +77,7 @@ class _OverViewPageState extends State<OverViewPage> {
               print('building index.json...');
               _readFilesAndBuildIndex();
               setState(() {});
+
               if (!prefs.containsKey('skynetUserKey')) {
                 final ctrl = TextEditingController();
 
@@ -157,6 +159,8 @@ class _OverViewPageState extends State<OverViewPage> {
                 print(skynsRecord);
 
                 Navigator.of(context).pop();
+
+                // TODO Show success snackbar or toast
               } catch (e, st) {
                 Navigator.of(context).pop();
                 showDialog(
@@ -201,6 +205,15 @@ class _OverViewPageState extends State<OverViewPage> {
             subtitle: Text("${obj.questions.length} Fragen"),
             leading: Image.network(
                 "https://i3.ytimg.com/vi/${obj.videoLink}/default.jpg"),
+            /*          onLongPress: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => WatchPage(
+                    obj,
+                  ),
+                ),
+              );
+            }, */
             onTap: () async {
               /* final obj = */ await Navigator.of(context).push(
                 MaterialPageRoute(

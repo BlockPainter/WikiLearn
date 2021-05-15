@@ -5,15 +5,21 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/data.dart';
 import 'package:flutter_application_1/page/overview.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skynet/src/config.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 import 'app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  initializeDateFormatting('de_DE', null);
+
+  Intl.defaultLocale = 'de_DE';
 
   SkynetConfig.host = 'skyportal.xyz';
 
