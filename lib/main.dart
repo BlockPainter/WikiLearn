@@ -2,6 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
+//import 'dart:html';
+import 'package:recase/recase.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/data.dart';
 import 'package:flutter_application_1/page/overview.dart';
@@ -11,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skynet/src/config.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'model/Language.dart';
 
 import 'app.dart';
 
@@ -88,7 +92,7 @@ class _EditorPageState extends State<EditorPage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text("Json Editor"),
+        title: Text(Language["editor.heading"]),
       ),
       body: Form(
         key: _formKey,
@@ -124,7 +128,7 @@ class _EditorPageState extends State<EditorPage> {
                     ),
                     value: _quizObject.subject,
                     items: <DropdownMenuItem>[
-                      for (var item in [
+                      /*    for (var item in [
                         'mathe',
                         'informatik',
                         'physik',
@@ -138,23 +142,33 @@ class _EditorPageState extends State<EditorPage> {
                         'ethik',
                         'geschichte',
                         'sport',
-                      ])
+                      ]) */
+
+                      for (var t in QuizSubjectType.values)
                         DropdownMenuItem(
-                          value: item,
-                          child: Text(item),
+                          value: t,
+                          child: Row(
+                            children: [
+                              Icon(QuizSubjectTypeInfo[t].symbol),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(QuizSubjectTypeInfo[t].displayName),
+                            ],
+                          ),
                         ),
                     ],
-                    onSaved: (str) {
-                      _quizObject.subject = str;
+                    onSaved: (o) {
+                      _quizObject.subject = o;
                     },
-                    onChanged: (str) {},
+                    onChanged: (o) {},
                   ),
                   SizedBox(height: 16),
                   TextField(
                     controller: TextEditingController(text: _quizObject.topic),
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: "Topic",
+                      labelText: Language["editor.topic"],
                     ),
                     maxLines: 1,
                     onChanged: (str) {
@@ -179,18 +193,18 @@ class _EditorPageState extends State<EditorPage> {
                           ),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
-                            labelText: "Youtube Video URL",
+                            labelText: Language["editor.url"],
                           ),
                           maxLines: 1,
                           validator: (str) {
                             if (str.isEmpty) {
-                              return "Empty URL!";
+                              return Language["editor.url.error.empty"];
                             }
 
                             try {
                               VideoId.fromString(str);
                             } catch (e) {
-                              return "Invalid URL!";
+                              return Language["editor.url.error.invalid"];
                             }
 
                             return null;
@@ -224,7 +238,10 @@ class _EditorPageState extends State<EditorPage> {
                     },
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
-                      children: [Icon(Icons.add), Text("Add a Frage")],
+                      children: [
+                        Icon(Icons.add),
+                        Text(Language["editor.add.question"])
+                      ],
                     ),
                   ),
                   for (var item in _quizObject.questions)
@@ -240,14 +257,39 @@ class _EditorPageState extends State<EditorPage> {
                               ),
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
-                                labelText: "Content",
+                                labelText: Language["editor.content"],
                               ),
                               onChanged: (str) {
                                 item.content = str;
                               },
                             ),
                             SizedBox(height: 10),
-                            TextFormField(
+                            DropdownButtonFormField(
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                              ),
+                              value: QuizQuestionType.multipleChoice,
+                              items: <DropdownMenuItem>[
+                                for (var type in QuizQuestionType.values)
+                                  DropdownMenuItem(
+                                    value: type,
+                                    //child: Text(namesQuizQuestionType[type]),
+                                    child: Row(children: [
+                                      Icon(QuizQuestionTypeInfo[type].symbol),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(QuizQuestionTypeInfo[type]
+                                          .displayName),
+                                    ]),
+                                  )
+                              ],
+                              onSaved: (o) {
+                                item.type = o;
+                              },
+                              onChanged: (o) {},
+                            ),
+                            /*TextFormField(
                               controller: TextEditingController(
                                 text: item.type.toString(),
                               ),
@@ -255,8 +297,7 @@ class _EditorPageState extends State<EditorPage> {
                                 border: OutlineInputBorder(),
                                 labelText: "Type",
                               ),
-                            ),
-                            SizedBox(height: 10),
+                            ),*/
                             SizedBox(height: 10),
                             Row(
                               children: [
@@ -269,7 +310,7 @@ class _EditorPageState extends State<EditorPage> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Icon(Icons.add),
-                                      Text("Add a Antwort")
+                                      Text(Language["editor.add.answer"])
                                     ],
                                   ),
                                 ),
@@ -296,7 +337,7 @@ class _EditorPageState extends State<EditorPage> {
                                         ),
                                         decoration: InputDecoration(
                                           border: OutlineInputBorder(),
-                                          labelText: "Answer",
+                                          labelText: Language["editor.answer"],
                                         ),
                                         onChanged: (str) {
                                           answer.content = str;
@@ -305,7 +346,7 @@ class _EditorPageState extends State<EditorPage> {
                                       SizedBox(height: 10),
                                       Row(
                                         children: [
-                                          Text('Ist Korrekt'),
+                                          Text(Language["editor.valid"]),
                                           Checkbox(
                                             value: answer.correct,
                                             onChanged: (isIs) {
@@ -344,8 +385,10 @@ class _EditorPageState extends State<EditorPage> {
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
 
-            File file = File(
-                join("data", _quizObject.subject, _quizObject.topic + ".json"));
+            File file = File(join(
+                "data",
+                QuizSubjectTypeInfo[_quizObject.subject].name,
+                _quizObject.topic + ".json"));
             file.createSync(recursive: true);
 
             file.writeAsStringSync(json.encode(_quizObject));
