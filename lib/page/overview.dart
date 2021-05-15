@@ -64,6 +64,7 @@ class _OverViewPageState extends State<OverViewPage> {
             ),
             onPressed: () {
               print('building index.json...');
+              _readFilesAndBuildIndex();
             },
           )
         ],
