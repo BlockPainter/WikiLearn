@@ -73,7 +73,7 @@ class _OverViewPageState extends State<OverViewPage> {
         itemBuilder: (context, index) {
           QuizObject obj = _list[index];
           return ListTile(
-            title: Text("${obj.fach}: ${obj.topic}"),
+            title: Text("${obj.fachCapi}: ${obj.topic}"),
             subtitle: Text("${obj.questions.length} Fragen"),
             leading: Image.network(
                 "https://i3.ytimg.com/vi/${obj.videoLink}/default.jpg"),

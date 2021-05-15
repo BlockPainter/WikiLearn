@@ -1,3 +1,5 @@
+import 'package:recase/recase.dart';
+
 class QuizObject {
   String fach;
   String topic;
@@ -5,7 +7,7 @@ class QuizObject {
   String videoLink;
   List<QuizQuestion> questions = <QuizQuestion>[];
   bool isValid = false;
-
+  String get fachCapi => fach.sentenceCase;
   QuizObject(
       {this.fach = "mathe",
       this.topic = "",
