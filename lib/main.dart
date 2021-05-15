@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         primarySwatch: Colors.green,
-        brightness: Brightness.dark,
+        // brightness: Brightness.dark,
       ),
       home: OverViewPage(), //MyHomePage(title: 'Flutter Demo Home Page'),
     );
@@ -102,11 +102,14 @@ class _EditorPageState extends State<EditorPage> {
                 //mainAxisAlignment: MainAxisAlignment.center,
 
                 children: <Widget>[
+                  SizedBox(
+                    height: 32,
+                  ),
                   DropdownButtonFormField(
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                     ),
-                    value: _quizObject.fach,
+                    value: _quizObject.subject,
                     items: <DropdownMenuItem>[
                       for (var item in ["mathe", "deutsch", "geschichte"])
                         DropdownMenuItem(
@@ -115,7 +118,7 @@ class _EditorPageState extends State<EditorPage> {
                         ),
                     ],
                     onSaved: (str) {
-                      _quizObject.fach = str;
+                      _quizObject.subject = str;
                     },
                     onChanged: (str) {},
                   ),
@@ -314,7 +317,7 @@ class _EditorPageState extends State<EditorPage> {
             _formKey.currentState.save();
 
             File file = File(
-                join("data", _quizObject.fach, _quizObject.topic + ".json"));
+                join("data", _quizObject.subject, _quizObject.topic + ".json"));
             file.createSync(recursive: true);
 
             file.writeAsStringSync(json.encode(_quizObject));

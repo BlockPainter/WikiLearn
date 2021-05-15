@@ -1,5 +1,5 @@
 class QuizObject {
-  String fach;
+  String subject;
   String topic;
   String videoType;
   String videoLink;
@@ -7,13 +7,13 @@ class QuizObject {
   bool isValid = false;
 
   QuizObject(
-      {this.fach = "mathe",
+      {this.subject = "mathe",
       this.topic = "",
       this.videoLink = "",
       this.videoType = 'youtube'});
 
   factory QuizObject.fromJson(Map<String, dynamic> json) => QuizObject(
-        fach: json["fach"],
+        subject: json["subject"],
         topic: json["topic"],
         videoLink: json["videoLink"],
         videoType: json["videoType"],
@@ -21,7 +21,7 @@ class QuizObject {
           json["questions"].map((x) => QuizQuestion.fromJson(x)));
 
   Map toJson() => {
-        "fach": fach,
+        "subject": subject,
         "topic": topic,
         "videoLink": videoLink,
         "videoType": videoType,

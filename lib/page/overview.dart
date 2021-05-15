@@ -26,9 +26,9 @@ class _OverViewPageState extends State<OverViewPage> {
     Map index = {};
     for (var dir in rootDir.listSync()) {
       if (dir is Directory) {
-        final fach = basename(dir.path);
-        print('Fach: $fach');
-        index[fach] = [];
+        final subject = basename(dir.path);
+        print('subject: $subject');
+        index[subject] = [];
         for (var file in dir.listSync()) {
           if (file is File) {
             print(file);
@@ -36,13 +36,13 @@ class _OverViewPageState extends State<OverViewPage> {
                 QuizObject.fromJson(json.decode(file.readAsStringSync()));
             _list.add(qo);
 
-            index[fach].add({
-              'fach': qo.fach,
+            index[subject].add({
+              'subject': qo.subject,
               'topic': qo.topic,
               'image': 'https://i3.ytimg.com/vi/${qo.videoLink}/mqdefault.jpg',
               'questionCount': qo.questions.length,
               'url':
-                  'https://jhackt.hns.siasky.net/${qo.fach}/${Uri.encodeFull(qo.topic)}.json',
+                  'https://jhackt.hns.siasky.net/${qo.subject}/${Uri.encodeFull(qo.topic)}.json',
             });
           }
         }
@@ -73,7 +73,7 @@ class _OverViewPageState extends State<OverViewPage> {
         itemBuilder: (context, index) {
           QuizObject obj = _list[index];
           return ListTile(
-            title: Text("${obj.fach}: ${obj.topic}"),
+            title: Text("${obj.subject}: ${obj.topic}"),
             subtitle: Text("${obj.questions.length} Fragen"),
             leading: Image.network(
                 "https://i3.ytimg.com/vi/${obj.videoLink}/default.jpg"),
