@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app.dart';
 import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/model/data.dart';
+import 'package:flutter_application_1/page/options.dart';
 // import 'package:flutter_application_1/page/watch.dart';
 import 'package:flutter_application_1/utils/skynet.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -72,6 +73,12 @@ class _OverViewPageState extends State<OverViewPage> {
       appBar: AppBar(
         title: Text("overview.heading".tr()),
         actions: [
+          IconButton(
+              icon: Icon(Icons.settings),
+              onPressed: () {
+                final obj = Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => OptionsPage()));
+              }),
           IconButton(
               icon: Icon(MdiIcons.translate),
               onPressed: () async {
