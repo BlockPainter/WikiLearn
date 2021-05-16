@@ -1,10 +1,10 @@
-import 'dart:io';
+/* import 'dart:io';
 
-import 'package:path/path.dart';
+import 'package:path/path.dart'; */
 
-final languageDir = Directory(join("Language"));
+// final languageDir = Directory(join("Language"));
 
-class LanguageInit {
+/* class LanguageInit {
   bool hasLanguages = false;
   List<String> languages;
 
@@ -34,12 +34,13 @@ class LanguageInit {
     }
     return false;
   }
-}
+} */
 
-final Language = <String, String>{
+/* final Language = <String, String>{
   "heading": "WikiLearn Editior",
   "overview.heading": "Übersicht",
   "overview.add": "Hinzufügen",
+  "settings.chooseLanguage": "Sprache ändern",
   "editor.heading": "Json Editor",
   "editor.topic": "Tehmer",
   "editor.url": "Youtube Video Link oder Code",
@@ -51,3 +52,4 @@ final Language = <String, String>{
   "editor.answer": "Antwort",
   "editor.valid": "Richtig",
 };
+ */

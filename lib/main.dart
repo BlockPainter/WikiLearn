@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization_loader/easy_localization_loader.dart';
 //import 'dart:html';
 import 'package:recase/recase.dart';
 
@@ -14,22 +16,35 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skynet/src/config.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'model/Language.dart';
+
 
 import 'app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
 
-  initializeDateFormatting('de_DE', null);
+/*   initializeDateFormatting('de_DE', null);
 
-  Intl.defaultLocale = 'de_DE';
+  Intl.defaultLocale = 'de_DE'; */
 
   SkynetConfig.host = 'skyportal.xyz';
 
   prefs = await SharedPreferences.getInstance();
 
-  runApp(MyApp());
+  runApp(
+    EasyLocalization(
+      supportedLocales: [
+        Locale('en', 'US'),
+        Locale('de', 'DE'),
+      ],
+      path:
+          'assets/translations', // <-- change the path of the translation files
+      fallbackLocale: Locale('en', 'US'),
+      child: MyApp(),
+      assetLoader: YamlAssetLoader(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -49,6 +64,9 @@ class MyApp extends StatelessWidget {
       ),
       initial: AdaptiveThemeMode.light,
       builder: (theme, darkTheme) => MaterialApp(
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
         title: 'WikiLearn Editor',
         theme: theme,
         darkTheme: darkTheme,
@@ -92,7 +110,7 @@ class _EditorPageState extends State<EditorPage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(Language["editor.heading"]),
+        title: Text("editor.heading".tr()),
       ),
       body: Form(
         key: _formKey,
@@ -168,7 +186,7 @@ class _EditorPageState extends State<EditorPage> {
                     controller: TextEditingController(text: _quizObject.topic),
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: Language["editor.topic"],
+                      labelText: "editor.topic".tr(),
                     ),
                     maxLines: 1,
                     onChanged: (str) {
@@ -185,52 +203,55 @@ class _EditorPageState extends State<EditorPage> {
                         ),*/
                   SizedBox(height: 16),
                   Card(
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          controller: TextEditingController(
-                            text: _quizObject.videoLink,
-                          ),
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: Language["editor.url"],
-                          ),
-                          maxLines: 1,
-                          validator: (str) {
-                            if (str.isEmpty) {
-                              return Language["editor.url.error.empty"];
-                            }
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            controller: TextEditingController(
+                              text: _quizObject.videoLink,
+                            ),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: "editor.url".tr(),
+                            ),
+                            maxLines: 1,
+                            validator: (str) {
+                              if (str.isEmpty) {
+                                return "editor.url.error.empty".tr();
+                              }
 
-                            try {
-                              VideoId.fromString(str);
-                            } catch (e) {
-                              return Language["editor.url.error.invalid"];
-                            }
+                              try {
+                                VideoId.fromString(str);
+                              } catch (e) {
+                                return "editor.url.error.invalid".tr();
+                              }
 
-                            return null;
-                          },
-                          onChanged: (str) {
-                            // item.content = str;
-                            try {
-                              _quizObject.videoLink =
-                                  VideoId.fromString(str).value;
-                              setState(() {});
-                            } catch (e) {
-                              _quizObject.videoLink = '';
-                            }
-                          },
-                        ),
-                        if (_quizObject != null &&
-                            _quizObject.videoLink.isNotEmpty)
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: (Image.network(
-                                "https://i3.ytimg.com/vi/${_quizObject.videoLink}/hqdefault.jpg")),
+                              return null;
+                            },
+                            onChanged: (str) {
+                              // item.content = str;
+                              try {
+                                _quizObject.videoLink =
+                                    VideoId.fromString(str).value;
+                                setState(() {});
+                              } catch (e) {
+                                _quizObject.videoLink = '';
+                              }
+                            },
                           ),
-                      ],
+                          if (_quizObject != null &&
+                              _quizObject.videoLink.isNotEmpty)
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: (Image.network(
+                                  "https://i3.ytimg.com/vi/${_quizObject.videoLink}/mqdefault.jpg")),
+                            ),
+                        ],
+                      ),
                     ),
                   ),
-                  SizedBox(height: 30),
+                  SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () {
                       _quizObject.questions.add(QuizQuestion());
@@ -240,10 +261,11 @@ class _EditorPageState extends State<EditorPage> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(Icons.add),
-                        Text(Language["editor.add.question"])
+                        Text("editor.add.question".tr())
                       ],
                     ),
                   ),
+                  SizedBox(height: 16),
                   for (var item in _quizObject.questions)
                     Card(
                       elevation: 6,
@@ -257,7 +279,7 @@ class _EditorPageState extends State<EditorPage> {
                               ),
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
-                                labelText: Language["editor.content"],
+                                labelText: "editor.content".tr(),
                               ),
                               onChanged: (str) {
                                 item.content = str;
@@ -310,7 +332,7 @@ class _EditorPageState extends State<EditorPage> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Icon(Icons.add),
-                                      Text(Language["editor.add.answer"])
+                                      Text("editor.add.answer".tr())
                                     ],
                                   ),
                                 ),
@@ -337,7 +359,7 @@ class _EditorPageState extends State<EditorPage> {
                                         ),
                                         decoration: InputDecoration(
                                           border: OutlineInputBorder(),
-                                          labelText: Language["editor.answer"],
+                                          labelText: "editor.answer".tr(),
                                         ),
                                         onChanged: (str) {
                                           answer.content = str;
@@ -346,7 +368,7 @@ class _EditorPageState extends State<EditorPage> {
                                       SizedBox(height: 10),
                                       Row(
                                         children: [
-                                          Text(Language["editor.valid"]),
+                                          Text("editor.valid".tr()),
                                           Checkbox(
                                             value: answer.correct,
                                             onChanged: (isIs) {

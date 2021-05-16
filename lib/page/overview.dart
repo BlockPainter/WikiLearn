@@ -6,12 +6,13 @@ import 'package:convert/convert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app.dart';
 import 'package:flutter_application_1/main.dart';
-import 'package:flutter_application_1/model/Language.dart';
 import 'package:flutter_application_1/model/data.dart';
 // import 'package:flutter_application_1/page/watch.dart';
 import 'package:flutter_application_1/utils/skynet.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:path/path.dart';
+
+import 'package:easy_localization/easy_localization.dart';
 
 import 'package:skynet/src/skydb.dart';
 import 'package:skynet/src/registry.dart';
@@ -24,8 +25,6 @@ class OverViewPage extends StatefulWidget {
 class _OverViewPageState extends State<OverViewPage> {
   var _list = <QuizObject>[];
 
-  final languageManager = LanguageInit();
-
   final rootDir = Directory("data");
 
   @override
@@ -33,9 +32,6 @@ class _OverViewPageState extends State<OverViewPage> {
     super.initState();
     print("initState");
     _readFilesAndBuildIndex();
-    print("Init Language");
-
-    print("Languages: ${languageManager.getLanguages()}");
   }
 
   void _readFilesAndBuildIndex() {
@@ -74,8 +70,36 @@ class _OverViewPageState extends State<OverViewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(Language["overview.heading"]),
+        title: Text("overview.heading".tr()),
         actions: [
+          IconButton(
+              icon: Icon(MdiIcons.translate),
+              onPressed: () async {
+                final Locale lang = await showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text('settings.chooseLanguage'.tr()),
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        for (final lang in context.supportedLocales)
+                          ListTile(
+                            title: Text({
+                              'de': 'Deutsch',
+                              'en': 'English',
+                            }[lang.languageCode]),
+                            onTap: () {
+                              Navigator.of(context).pop(lang);
+                            },
+                          ),
+                      ],
+                    ),
+                  ),
+                );
+                if (lang != null) {
+                  context.setLocale(lang);
+                }
+              }),
           IconButton(
             icon: Icon(
               Icons.upload_outlined,
@@ -209,10 +233,11 @@ class _OverViewPageState extends State<OverViewPage> {
           QuizObject obj = _list[index];
           return ListTile(
             title: Text("${obj.subjectCapi}: ${obj.topic}"),
-            subtitle: Text("${obj.questions.length} Fragen"),
+            subtitle: Text('overview.item.questionCount'
+                .tr(args: [obj.questions.length.toString()])),
             leading: Image.network(
-                "https://i3.ytimg.com/vi/${obj.videoLink}/default.jpg"),
-            /*          onLongPress: () {
+                "https://i3.ytimg.com/vi/${obj.videoLink}/mqdefault.jpg"),
+            /*   onLongPress: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => WatchPage(
@@ -257,20 +282,6 @@ class _OverViewPageState extends State<OverViewPage> {
           )
         ],
       ),*/
-      bottomNavigationBar: DropdownButtonFormField(
-        value: languageManager.getLanguages()[0],
-        items: <DropdownMenuItem>[
-          for (var l in languageManager.getLanguages())
-            DropdownMenuItem(
-              value: l,
-              child: Text(l),
-            ),
-        ],
-        onSaved: (o) {},
-        onChanged: (o) {
-          languageManager.readLanguages(o);
-        },
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           final obj = await Navigator.of(context)

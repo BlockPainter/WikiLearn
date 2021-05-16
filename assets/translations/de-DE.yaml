@@ -1,0 +1,17 @@
+heading: WikiLearn Editior
+overview.heading: Übersicht
+overview.add: Hinzufügen
+overview.item.questionCount: "{} Fragen"
+settings.chooseLanguage: Sprache ändern
+editor.heading: Thema editieren
+editor.topic: Thema
+editor.url: YouTube Video Link oder Code
+editor.url.error.empty: Die URL ist noch leer
+editor.url.error.invalid: Ungültiges Video
+editor.add.question: Frage Hinzufügen
+editor.content: Fragestellung / Frage
+editor.add.answer: Antwort Hinzufügen
+editor.answer: Antwort
+editor.valid: Richtig
+
+viewer.notes.title: Notizen
